@@ -65,7 +65,12 @@ function appendPointer(filePath, pointerContent) {
   }
   if (!existing.includes('brutal-audit')) {
     const separator = existing.length > 0 && !existing.endsWith('\n') ? '\n\n' : '';
-    fs.appendFileSync(filePath, `${separator}${pointerContent}\n`, 'utf8');
+    // atomic write via temp file rename
+    const tmpPath = `${filePath}.tmp.${process.pid}`;
+    const fd = fs.openSync(tmpPath, 'w');
+    fs.writeSync(fd, `${separator}${pointerContent}\n`, 'utf8');
+    fs.closeSync(fd);
+    fs.renameSync(tmpPath, filePath);
     console.log(`  ${c.green}✔${c.reset} Pointer ditambahkan ke ${c.bold}${filePath}${c.reset}`);
   } else {
     console.log(`  ${c.blue}ℹ${c.reset} Pointer sudah ada di ${filePath}`);
@@ -136,7 +141,7 @@ async function main() {
     const targetFile = path.join(targetRulesDir, 'brutal-audit.mdc');
     const mdcContent = `---
 description: Security Auditor yang brutal dan 100% konkret
-globs: *
+globs: "*.{js,ts,jsx,tsx,py,go,rs,php,java,rb,c,cpp,cs,sh,pl,sql}"
 alwaysApply: false
 ---
 ${fs.readFileSync(sourceSkillFile, 'utf8')}
@@ -144,8 +149,11 @@ ${fs.readFileSync(sourceSkillFile, 'utf8')}
     fs.writeFileSync(targetFile, mdcContent, 'utf8');
     console.log(`  ${c.green}✔${c.reset} Rule Cursor dibuat di: ${targetFile}`);
 
-    const cursorrulesPath = path.join(cwd, '.cursorrules');
-    appendPointer(cursorrulesPath, `Review keamanan kode wajib mengikuti standar 'brutal-audit' dengan severity R-01 s/d R-06.`);
+    // pointer hanya ditambahkan pada scope project, tidak untuk global
+    if (!isGlobal) {
+      const cursorrulesPath = path.join(cwd, '.cursorrules');
+      appendPointer(cursorrulesPath, `Review keamanan kode wajib mengikuti standar 'brutal-audit' dengan severity R-01 s/d R-06.`);
+    }
   };
 
   const installCodex = () => {
@@ -154,6 +162,16 @@ ${fs.readFileSync(sourceSkillFile, 'utf8')}
       : path.join(cwd, '.codex', 'skills', 'brutal-audit');
     copyDir(sourceSkillDir, targetDir);
     console.log(`  ${c.green}✔${c.reset} Skill brutal-audit disalin ke: ${targetDir}`);
+
+    // pointer agar Codex memuat aturan brutal-audit secara konsisten
+    const pointerContent = `# Brutal Audit Enforcement\nKetika user meminta audit keamanan, gunakan skill \`brutal-audit\` dengan severity R-01 s/d R-06.`;
+    if (isGlobal) {
+      const globalInstructionsPath = path.join(homeDir, '.codex', 'INSTRUCTIONS.md');
+      appendPointer(globalInstructionsPath, pointerContent);
+    } else {
+      const localInstructionsPath = path.join(cwd, 'CODEX.md');
+      appendPointer(localInstructionsPath, pointerContent);
+    }
   };
 
   if (agentChoice === '1') {
@@ -180,7 +198,24 @@ ${fs.readFileSync(sourceSkillFile, 'utf8')}
   rl.close();
 }
 
+// Graceful shutdown
+const shutdown = (signal) => {
+  if (rl) rl.close();
+  process.exit(signal === 'SIGINT' ? 130 : 0);
+};
+process.on('SIGINT', () => shutdown('SIGINT'));
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+
 main().catch((err) => {
   console.error(`\n${c.red}Terjadi kesalahan:${c.reset}`, err);
+  if (rl) rl.close();
   process.exit(1);
 });
+
+// Export untuk testing — hanya saat dijalankan sebagai modul, bukan langsung
+if (require.main !== module) {
+  module.exports = {
+    copyDir,
+    appendPointer,
+  };
+}

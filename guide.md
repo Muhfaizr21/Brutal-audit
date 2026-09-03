@@ -51,7 +51,7 @@ Gunakan opsi:
 Jika Anda pengguna Claude Code CLI:
 
 ```text
-/plugin marketplace add https://github.com/Muhfaizr21/Brutal-audit
+/plugin marketplace add https://github.com/muhfaizr21/brutal-audit
 /plugin install brutal-audit@Brutal-audit
 ```
 
@@ -61,7 +61,7 @@ Jika Anda pengguna Claude Code CLI:
 Repositori ini dilengkapi dengan manifest `plugin.json` standar Antigravity:
 
 ```bash
-agy plugin install https://github.com/Muhfaizr21/Brutal-audit
+agy plugin install https://github.com/muhfaizr21/brutal-audit
 ```
 
 Atau salin folder `skills/brutal-audit` ke:

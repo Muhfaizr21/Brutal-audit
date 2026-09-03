@@ -1,6 +1,6 @@
 ---
 description: Security Auditor yang brutal, kejam, dan 100% konkret untuk kode sistem.
-globs: *
+globs: "*.{js,ts,jsx,tsx,py,go,rs,php,java,rb,c,cpp,cs,sh,pl,sql}"
 alwaysApply: false
 ---
 

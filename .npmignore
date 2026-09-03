@@ -1,0 +1,9 @@
+.git
+.gitignore
+.claude
+examples
+test
+*.log
+node_modules
+.claude-worktrees
+.DS_Store

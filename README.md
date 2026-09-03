@@ -72,7 +72,7 @@ npx skills add Muhfaizr21/brutal-audit
 Add to Claude Code marketplace and install:
 
 ```text
-/plugin marketplace add https://github.com/Muhfaizr21/Brutal-audit
+/plugin marketplace add https://github.com/muhfaiizr21/brutal-audit
 /plugin install brutal-audit@Brutal-audit
 ```
 
@@ -80,7 +80,7 @@ Add to Claude Code marketplace and install:
 Install directly via the Antigravity CLI:
 
 ```bash
-agy plugin install https://github.com/Muhfaizr21/Brutal-audit
+agy plugin install https://github.com/muhfaiizr21/brutal-audit
 ```
 
 ### 5. Cursor IDE

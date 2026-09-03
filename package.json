@@ -10,9 +10,6 @@
     "bin",
     "skills",
     "rules",
-    ".cursor",
-    ".claude-plugin",
-    ".codex-plugin",
     "SKILL.md",
     "plugin.json",
     "guide.md",
@@ -21,7 +18,8 @@
   ],
   "scripts": {
     "start": "node bin/cli.js",
-    "audit": "node bin/cli.js"
+    "audit": "node bin/cli.js",
+    "test": "node test/cli.test.js"
   },
   "keywords": [
     "agent-skills",
@@ -38,12 +36,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Muhfaizr21/Brutal-audit.git"
+    "url": "git+https://github.com/muhfaiizr21/brutal-audit.git"
   },
   "bugs": {
-    "url": "https://github.com/Muhfaizr21/Brutal-audit/issues"
+    "url": "https://github.com/muhfaizr21/brutal-audit/issues"
   },
-  "homepage": "https://github.com/Muhfaizr21/Brutal-audit#readme",
+  "homepage": "https://github.com/muhfaizr21/brutal-audit#readme",
   "author": "Muhfaizr21",
   "license": "MIT"
 }
