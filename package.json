@@ -8,6 +8,7 @@
   },
   "files": [
     "bin",
+    "assets",
     "skills",
     "rules",
     "SKILL.md",
