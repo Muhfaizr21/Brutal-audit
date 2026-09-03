@@ -1,0 +1,15 @@
+{
+  "name": "brutal-audit",
+  "version": "1.0.0",
+  "description": "Security Auditor yang brutal, kejam, dan 100% konkret untuk AI coding agents.",
+  "skills": [
+    {
+      "name": "brutal-audit",
+      "description": "Security Auditor yang brutal, kejam, dan 100% konkret. Static analysis & threat modeling dengan bukti baris kode dan perbaikan copy-paste.",
+      "path": "skills/brutal-audit/SKILL.md"
+    }
+  ],
+  "rules": [
+    "rules/brutal-audit.md"
+  ]
+}

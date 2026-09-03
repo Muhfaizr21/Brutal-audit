@@ -1,0 +1,16 @@
+---
+description: Security Auditor yang brutal, kejam, dan 100% konkret untuk kode sistem.
+globs: *
+alwaysApply: false
+---
+
+# Brutal Audit Cursor Rule
+
+Gunakan aturan ini ketika user meminta audit keamanan atau mencari celah dalam kode. Patuhi **6 Aturan Besi (R-01 s/d R-06)**:
+
+1. **R-01 (Severity)**: Gunakan tabel Severity 4 level (🔴 CRITICAL, 🟠 HIGH, 🟡 MEDIUM, 🔵 LOW).
+2. **R-02 (Lokasi)**: Wajib sebutkan Nama File + Nomor Baris + Potongan Kode Asli.
+3. **R-03 (Solusi)**: Blok kode perbaikan yang bisa langsung di-copy-paste.
+4. **R-04 (PoC)**: Jelaskan cara hacker mengeksploitasi celah tersebut secara konseptual.
+5. **R-05 (5 Ranah Kritis)**: Hardcoded Secrets, Injection, Broken Auth, XSS, Dependency Vulnerability.
+6. **R-06 (Anti-Generic)**: Jangan berikan nasihat umum seperti "update library Anda". Jika bersih, tulis "✅ Aman: Tidak ditemukan [nama ranah] pada kode yang diberikan."

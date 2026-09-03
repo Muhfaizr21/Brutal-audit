@@ -1,0 +1,49 @@
+{
+  "name": "brutal-audit",
+  "version": "1.0.0",
+  "description": "Security Auditor yang brutal, kejam, dan 100% konkret untuk AI coding agents (Claude Code, Antigravity, Cursor, Codex).",
+  "main": "bin/cli.js",
+  "bin": {
+    "brutal-audit": "./bin/cli.js"
+  },
+  "files": [
+    "bin",
+    "skills",
+    "rules",
+    ".cursor",
+    ".claude-plugin",
+    ".codex-plugin",
+    "SKILL.md",
+    "plugin.json",
+    "guide.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "start": "node bin/cli.js",
+    "audit": "node bin/cli.js"
+  },
+  "keywords": [
+    "agent-skills",
+    "skills.sh",
+    "security-audit",
+    "sast",
+    "threat-modeling",
+    "claude-code",
+    "antigravity",
+    "cursor",
+    "codex",
+    "owasp",
+    "code-security"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Muhfaizr21/Brutal-audit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Muhfaizr21/Brutal-audit/issues"
+  },
+  "homepage": "https://github.com/Muhfaizr21/Brutal-audit#readme",
+  "author": "Muhfaizr21",
+  "license": "MIT"
+}

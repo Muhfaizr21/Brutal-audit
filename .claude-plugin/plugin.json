@@ -1,0 +1,8 @@
+{
+  "name": "brutal-audit",
+  "description": "Security Auditor yang brutal, kejam, dan 100% konkret untuk AI coding agents.",
+  "version": "1.0.0",
+  "skills": [
+    "./skills/brutal-audit"
+  ]
+}
